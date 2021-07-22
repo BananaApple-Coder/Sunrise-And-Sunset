@@ -5,7 +5,7 @@ const Constraint = Matter.Constraint;
 
 var engine, world;
 var backgroundImg;
-var hour;
+var hour, minuute;
 
 var bg = "sunrise.png";
 
@@ -31,11 +31,11 @@ function draw(){
     textSize(30);
     
     if(hour>=12){
-        text("Time : "+ hour%12 + " PM", 50,100);
-    }else if(hour==0){
-        text("Time : 12 AM",100,100);
+        text("Time: "+ hour%12 + ":" + minute + " PM", 50,100);
+    }else if(hour= =0){
+        text("Time: 12:" + minute + " AM",100,100);
     }else{
-        text("Time : "+ hour%12 + " AM", 50,100);
+        text("Time: "+ hour%12 + ":" + minute + " AM", 50,100);
     }
 
 }
@@ -43,7 +43,23 @@ function draw(){
 async function getBackgroundImg(){
 
     // write code to fetch time from API
+    var IPResponse = await fetch("https://api.ipify.org?format=json")
+    var IPResJSON = await IPResponse.json()
+    var IP = IPResJSON.ip
     
+    var timeRes = await fetch("http://worldtimeapi.org/api/ip")
+    var timeJSON = await timeRes.json()
+    var dateTime =  timeJSON.datetime
+    hour = dateTime.slice(11, 13)
+    minute = dateTime.slice(14, 16)
+    var time = hour * 60 + minute 
+
+    var SunResponse = await fetch("https://api.ipgeolocation.io/astronomy?apiKey=3802621872244b0197de33d13ac68455&ip=" + IP)
+    var SunResJSON = await SunResponse.json()
+    var sunriseCom = SunResJSON.sunrise
+    var sunsetCom = SunResJSON.sunset
+    var sunrise = sunriseCom.slice(0, 2) * 60 + sunriseCom.slice(3, 5)
+    var sunset = sunsetCom.slice(0, 2) * 60 + sunsetCom.slice(3, 5) 
  
     //change the data in JSON format and store it in variable responseJSON
     
@@ -57,7 +73,7 @@ async function getBackgroundImg(){
     
 
     
-    if(hour>=0 && hour<18 ){
+    if(time >= sunrise && hour < sunset){
         bg = "sunrise.png";
     }
     else{
