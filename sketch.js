@@ -32,7 +32,7 @@ function draw(){
     
     if(hour>=12){
         text("Time: "+ hour%12 + ":" + minute + " PM", 50,100);
-    }else if(hour= =0){
+    }else if(hour==0){
         text("Time: 12:" + minute + " AM",100,100);
     }else{
         text("Time: "+ hour%12 + ":" + minute + " AM", 50,100);
