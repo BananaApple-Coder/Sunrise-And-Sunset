@@ -47,7 +47,7 @@ async function getBackgroundImg(){
     var IPResJSON = await IPResponse.json()
     var IP = IPResJSON.ip
     
-    var timeRes = await fetch("http://worldtimeapi.org/api/ip")
+    var timeRes = await fetch("https://worldtimeapi.org/api/ip")
     var timeJSON = await timeRes.json()
     var dateTime =  timeJSON.datetime
     hour = dateTime.slice(11, 13)
